@@ -8,6 +8,7 @@ use App\Http\Controllers\TenagaMedisController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BpjsInformationController;
 use App\Http\Controllers\Resource\ProfileController;
+use App\Http\Controllers\Resource\RevisiHistoryPatientController;
 use App\Http\Controllers\Resource\PatientHistoryController;
 use App\Http\Controllers\Resource\Admin\PolyResourceController;
 use App\Http\Controllers\Resource\Admin\DoctorResourceController;
@@ -72,6 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/riwayat-medis', [ProfileController::class, 'historyPovPatient'])->name('profile.medical.histories');
+    Route::get('/profile/riwayat-medis/{id}/{status}', [PatientHistoryController::class, 'ajukanDownload'])->name('patient.ajukan.download');
 
 });
 
@@ -125,6 +127,29 @@ Route::middleware(['auth'])
 
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('admin.dashboard');
+
+        Route::get('/dashboard/history-rekap', [DashboardController::class, 'rekapMedisDefault'])
+            ->name('admin.history-rekap');
+
+        Route::post('/antrian/call-next', [DashboardController::class, 'callNextPatient'])
+            ->name('admin.dashboad.antrian.call-next');
+
+        Route::get('rekap-medis', [DashboardController::class, 'rekapMedis'])
+            ->name('admin.rekap-medis');
+
+
+        // Form revisi
+        Route::get('/admin/rekap-medis/revisi/{id}', [RevisiHistoryPatientController::class, 'index'])
+            ->name('revision.index');
+            
+
+        // Simpan revisi
+        Route::post('/admin/rekap-medis/revisi', [RevisiHistoryPatientController::class, 'create'])
+            ->name('revision.store');
+
+    Route::get('/dokter/rekap/ajukan-revisi/{id}', [PatientHistoryController::class, 'ajukanRevisi'])
+     ->name('patient-history.ajukan-revisi');
+            
     });
 
 //History
@@ -164,13 +189,15 @@ Route::prefix('admin')
             'histories/{history}/emergency',
             [PatientHistoryController::class, 'emergency']
         )->name('histories.emergency');
+
+
     });
 
-    //bpjs
-    Route::middleware('auth')->group(function () {
+//bpjs
+Route::middleware('auth')->group(function () {
     Route::get('/profile/bpjs', [BpjsInformationController::class, 'index'])
         ->name('profile.bpjs.index');
-        Route::get('/profile/bpjs/create', [BpjsInformationController::class, 'create'])->name('profile.bpjs.create');
+    Route::get('/profile/bpjs/create', [BpjsInformationController::class, 'create'])->name('profile.bpjs.create');
     Route::post('/profile/bpjs', [BpjsInformationController::class, 'store'])->name('profile.bpjs.store');
 });
 

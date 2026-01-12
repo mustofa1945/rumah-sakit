@@ -45,6 +45,11 @@ class Dokter extends Model
         return $this->hasMany(PatientHistory::class, 'dokter_id');
     }
 
+     public function revisions()
+    {
+        return $this->hasMany(PatientHistoryRevision::class, 'edited_by');
+    }
+
     // Enum schedule_day (opsional, untuk validasi / helper)
     public const DAYS = [
         'Senin',

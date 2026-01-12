@@ -22,6 +22,9 @@ class PatientHistory extends Model
         'tindakan',
         'resep',
         'status',
+        'status_rekap',
+        'status_revision',
+        'status_download'
     ];
 
     protected $casts = [
@@ -79,5 +82,10 @@ class PatientHistory extends Model
     public function scopeStatus($query, string $status)
     {
         return $query->where('status', $status);
+    }
+
+     public function revisions()
+    {
+        return $this->hasMany(PatientHistoryRevision::class, 'patient_history_id');
     }
 }

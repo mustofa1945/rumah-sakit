@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Dr.
+                        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">
                             {{ Auth::user()->dokter->name }}
                         </h1>
                         <div class="flex items-center gap-3 mt-1">
@@ -206,6 +206,13 @@
                                         <td class="px-6 py-6 text-right">
                                             {{-- Button Panggil/Selesai tetap seperti kode sebelumnya --}}
                                             @if($item->status == 'WAITING')
+                                            @if($isHasCalledStatus)
+                                            <button type="button" 
+                                                    class="bg-gray-400 text-gray-100 px-5 py-2 rounded-xl text-xs font-bold cursor-not-allowed shadow-none" 
+                                                    disabled>
+                                                    Call
+                                                </button>
+                                            @else
                                                 <form action="{{ route('queue.nextStatus', $item->id) }}" method="POST">
                                                     @csrf @method('PATCH')
                                                     <input type="hidden" name="status" value="CALLED">
@@ -213,13 +220,10 @@
                                                     <button
                                                         class="bg-blue-600 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-blue-200">Call</button>
                                                 </form>
+                                            @endif
                                             @elseif($item->status == 'CALLED')
                                                 <a href="{{ route('admin.patient-histories.create', [$item->user_id]) }}"
                                                     class="bg-[#064E3B] hover:bg-emerald-900 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-200">Rekap</a>
-
-                                            @elseif($item->status == "DONE")
-                                                <a href="{{ route('patients.histories.index', [$item->user_id]) }}"
-                                                    class="bg-[#064E3B] hover:bg-emerald-900 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-200">Medical</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -233,7 +237,7 @@
                                 x-cloak>
 
                                 <div x-show="openModal" x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                    x-transition:enter-tart="opacity-0" x-transition:enter-end="opacity-100"
                                     x-transition:leave="transition ease-in duration-200"
                                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                                     @click="isExiting = true; setTimeout(() => { openModal = false }, 300)"
@@ -337,25 +341,46 @@
                     </div>
                     <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-blue-50 rounded-full opacity-30"></div>
                 </div>
-
-                <button
-                    class="w-full group bg-gradient-to-r from-[#064E3B] to-emerald-700 hover:to-emerald-800 p-1 rounded-[2rem] transition-all duration-300 shadow-xl shadow-emerald-200 transform hover:-translate-y-1">
-                    <div class="bg-[#064E3B]/10 rounded-[1.9rem] p-6 flex items-center justify-between">
-                        <div class="text-left text-white px-2">
-                            <p class="text-emerald-300 text-[9px] font-black uppercase tracking-[0.25em] mb-1">Queue Control
-                            </p>
-                            <h4 class="font-extrabold text-xl tracking-tight">Panggil Berikutnya</h4>
-                        </div>
-                        <div
-                            class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-white backdrop-blur-lg group-hover:scale-110 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                            </svg>
+                @if ($isHasCalledStatus)
+                    <div
+                        class="w-full bg-gradient-to-r from-gray-400 to-gray-500 p-1 rounded-[2rem] shadow-none cursor-not-allowed">
+                        <div class="bg-gray-800/10 rounded-[1.9rem] p-6 flex items-center justify-between">
+                            <div class="text-left text-white/60 px-2">
+                                <p class="text-gray-300 text-[9px] font-black uppercase tracking-[0.25em] mb-1">Queue Control
+                                </p>
+                                <h4 class="font-extrabold text-xl tracking-tight text-gray-200">Panggil Berikutnya</h4>
+                            </div>
+                            <div
+                                class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-gray-300 backdrop-blur-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 opacity-50" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </button>
+                @else
+                    <form action="{{ route('admin.dashboad.antrian.call-next') }}" method="POST"
+                        class="w-full group bg-gradient-to-r from-[#064E3B] to-emerald-700 hover:to-emerald-800 p-1 rounded-[2rem] transition-all duration-300 shadow-xl shadow-emerald-200 transform hover:-translate-y-1">
+                        @csrf
+                        <div class="bg-[#064E3B]/10 rounded-[1.9rem] p-6 flex items-center justify-between">
+                            <div class="text-left text-white px-2">
+                                <p class="text-emerald-300 text-[9px] font-black uppercase tracking-[0.25em] mb-1">Queue Control
+                                </p>
+                                <h4 class="font-extrabold text-xl tracking-tight">Panggil Berikutnya</h4>
+                            </div>
+                            <button type="submit"
+                                class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-white backdrop-blur-lg group-hover:scale-110 transition-transform">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                @endif
             </div>
         </div>
     </div>

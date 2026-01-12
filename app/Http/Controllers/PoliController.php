@@ -33,12 +33,15 @@ class PoliController extends Controller
 
         $hariIni = $hariMap[Carbon::now()->format('l')];
 
+        $tanggalIni = Carbon::today(); // 2026-01-12
+
         $dokterHariIni = Dokter::where('schedule_day', $hariIni)
             ->count();
 
         $antrianAktif = Auth::check()
             ? Antrian::where('user_id', Auth::id())
                 ->whereIn('status', ['WAITING', 'CALLED'])
+                ->whereDate('tanggal_kunjungan' , $tanggalIni)
                 ->count()
             : 0;
 

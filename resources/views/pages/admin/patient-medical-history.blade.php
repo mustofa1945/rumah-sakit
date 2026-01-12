@@ -60,15 +60,6 @@
                         </svg>
                         Cetak Resume
                     </button>
-                    @if ($dokterSudahMencatat)
-                    <a href="{{ route('admin.patient-histories.create', ['user' => $biodata->user_id]) }}"
-                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-100 flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                            </svg>
-                            Perbarui Data
-                        </a>
-                    @else
                     <a href="{{ route('admin.patient-histories.create', ['user' => $biodata->user_id]) }}"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-xs font-bold transition-all shadow-lg shadow-blue-200 flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,7 +67,6 @@
                         </svg>
                         Kunjungan Baru
                     </a>
-                    @endif
                 </div>
             </div>
 

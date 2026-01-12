@@ -73,43 +73,10 @@ class PatientHistoryController extends Controller
             ->orderBy('created_at', 'asc')
             ->firstOrFail();
 
-        $today = Carbon::today()->toDateString();
-
-        $history = PatientHistory::where('user_id', $userId)
-            ->where('dokter_id', Auth::user()->dokter_id)
-            ->whereDate('tanggal_kunjungan', $today)
-            ->first();
-
-        // Jika sudah ada → redirect ke edit
-        if ($history) {
-            return redirect()->route(
-                'admin.patients.histories.edit',
-                ['history' => $history->id]
-            );
-        }
-
 
         return view('pages.admin.new-visit', compact('antrian'));
     }
 
-    public function edit(PatientHistory $history)
-    {
-        //
-        $antrian = Antrian::with(['user', 'dokter'])
-            ->where('user_id', $history->user_id)
-            ->where('dokter_id' , Auth::user()->dokter_id)
-            ->where('status', 'DONE') 
-            ->orderBy('created_at', 'asc')
-            ->firstOrFail();
-
-        // keamanan: dokter hanya boleh edit miliknya
-        abort_if(
-            $history->dokter_id !== Auth::user()->dokter_id,
-            403
-        );
-
-        return view('pages.admin.new-visit', compact('history' , 'antrian'));
-    }
 
 
     /**
@@ -153,6 +120,7 @@ class PatientHistoryController extends Controller
             'tindakan' => $validated['tindakan'],
             'resep' => $validated['resep'],
             'status' => $validated['status'],
+            'status_rekap' => 'COMPLETE'
         ]);
 
         // (OPSIONAL tapi sangat disarankan)
@@ -176,5 +144,32 @@ class PatientHistoryController extends Controller
         ]);
 
         return back()->with('warning', 'Pasien ditandai sebagai EMERGENCY');
+    }
+
+    public function ajukanRevisi($id)
+    {
+        // Ambil history berdasarkan ID
+        $history = PatientHistory::findOrFail($id);
+
+        // Ubah status menjadi pending revisi
+        $history->update([
+            'status_revision' => 'PENDING',
+        ]);
+
+        // Redirect ke halaman hasil rekap dokter dengan message
+        return redirect()->route('admin.rekap-medis')
+            ->with('success', 'Berhasil mengajukan revisi untuk pasien ini.');
+    }
+    
+    public function ajukanDownload($id , $status ){
+        $history = PatientHistory::findOrFail($id);
+
+        $history->update([
+            'status_download' => $status,
+        ]);
+        
+     return redirect()->route('profile.medical.histories')
+            ->with('success', 'Berhasil mengajukan download , silahlahkan tunggu approved');
+
     }
 }
