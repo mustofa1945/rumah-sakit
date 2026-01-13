@@ -18,7 +18,12 @@ class PatientQueueResourceController extends Controller
      */
     public function create(Request $request)
     {
-        $request->session()->put('antrian_prev_url', url()->previous());
+        
+        if(!Auth::check()){
+            return redirect()->back()
+            ->with('warning' , 'Login Terlebih Dahulu Sebelum Membuat Janji');
+        }
+
         if (!Auth::user()->is_filled_biodata) {
             return redirect()->route('profile.index')->with('message', 'Tolong isi biodata terlebih dahulu');
         }

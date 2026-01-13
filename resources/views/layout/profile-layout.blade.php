@@ -35,7 +35,7 @@
                         </div>
 
                         <nav class="bg-white  rounded-[2rem] p-4 shadow-sm border border-gray-100 flex flex-col gap-1">
-                            <a href="{{ route('profile.index') }}"
+                            <a href="{{ route('profile.biodata.index') }}"
                                 class="flex items-center biodata-asli  gap-3 px-4 py-3 rounded-2xl font-bold transition-all">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

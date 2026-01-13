@@ -21,11 +21,13 @@ class User extends Authenticatable
         'email',
         'password',
         "role_id",
-        'is_filled_biodata'
+        'is_filled_biodata',
+        'registered_by_admin'
     ];
 
     protected $casts = [
         'is_filled_biodata' => 'boolean',
+        'registered_by_admin' => 'boolean',
     ];
 
     protected $hidden = [
@@ -64,4 +66,25 @@ class User extends Authenticatable
     {
         return $this->hasOne(BpjsInformation::class, 'user_id');
     }
+
+    public function nurse()
+    {
+        return $this->hasOne(Nurse::class);
+    }
+
+    public function patient()
+    {
+        return $this->belongsTo(User::class, 'patient_id');
+    }
+
+        public function nurseRecords()
+    {
+        return $this->hasMany(NurseRecord::class, 'patient_id');
+    }
+
+     public function adminRegistration()
+    {
+        return $this->hasOne(AdminRegistration::class, 'user_id');
+    }
+
 }

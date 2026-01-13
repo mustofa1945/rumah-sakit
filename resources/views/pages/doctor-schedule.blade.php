@@ -1,6 +1,11 @@
 @extends('layout.mainLayout') {{-- Gunakan layout dengan header yang sudah kita buat --}}
 
 @section('content')
+@if (session('warning'))
+        <x-partials.notif-component message="Warning" sign="{{ session('warning') }}">
+            <x-partials.icon-alert />
+        </x-partials.notif-component>
+@endif
     <div class="min-h-screen bg-[#F8FAFC] p-8">
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">

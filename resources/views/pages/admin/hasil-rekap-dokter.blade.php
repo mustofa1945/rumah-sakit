@@ -1,16 +1,16 @@
 @extends('layout.admin')
 
 @section('content')
-  @if (session('success'))
+    @if (session('success'))
         <x-partials.notif-component message="Success" sign="{{ session('success') }}">
             <x-partials.icon-correct />
         </x-partials.notif-component>
     @endif
     <div x-data="{ 
-        showFilter: false, 
-        search: '',
-        timeFilter: 'all'
-    }" x-init="setTimeout(() => showFilter = true, 100)" class="space-y-8">
+            showFilter: false, 
+            search: '',
+            timeFilter: 'all'
+        }" x-init="setTimeout(() => showFilter = true, 100)" class="space-y-8">
 
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4" x-show="showFilter"
             x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 -translate-y-4"
@@ -34,15 +34,15 @@
 
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pasien..."
                         class="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm
-                       focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none w-64
-                       transition-all shadow-sm">
+                           focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none w-64
+                           transition-all shadow-sm">
                 </div>
                 <!-- TIME FILTER -->
                 <div class="relative">
                     <select name="timeFilter" class="appearance-none pl-4 pr-10 py-2.5 bg-white border border-slate-200
-                       rounded-xl text-sm font-semibold text-slate-600 focus:ring-2
-                       focus:ring-blue-500/20 focus:border-blue-500 outline-none cursor-pointer
-                       shadow-sm transition-all">
+                           rounded-xl text-sm font-semibold text-slate-600 focus:ring-2
+                           focus:ring-blue-500/20 focus:border-blue-500 outline-none cursor-pointer
+                           shadow-sm transition-all">
 
                         <option value="all">Semua Waktu</option>
                         <option value="today" {{ request('timeFilter') === 'today' ? 'selected' : '' }}>
@@ -68,11 +68,11 @@
 
                 <!-- SUBMIT -->
                 <button type="submit" class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl
-                       hover:bg-emerald-600 hover:text-white transition-all
-                       border border-emerald-100 shadow-sm shadow-emerald-100/50">
+                           hover:bg-emerald-600 hover:text-white transition-all
+                           border border-emerald-100 shadow-sm shadow-emerald-100/50">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586
-                         a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                             a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </button>
 
@@ -110,7 +110,8 @@
                             <tr class="hover:bg-blue-50/30 transition-colors group">
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-bold text-slate-700">
-                                        {{ \Carbon\Carbon::parse($history->tanggal_kunjungan)->format('d M Y') }}</div>
+                                        {{ \Carbon\Carbon::parse($history->tanggal_kunjungan)->format('d M Y') }}
+                                    </div>
                                     <div
                                         class="text-[10px] font-medium text-emerald-600 bg-emerald-50 w-fit px-2 py-0.5 rounded-full mt-1 uppercase tracking-tighter">
                                         Antrian #{{ $history->nomor_antrian }}</div>
@@ -147,77 +148,111 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     @if($history->status_revision == "NONE")
-                                    <a href="{{ route('patient-history.ajukan-revisi' , ['id' => $history->id]) }}"
-                                                class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all shadow-sm group-hover:shadow-blue-100 group">
-                                                
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                
-                                                <span>Ajukan Revisi</span>
-                                            </a>
+                                        <a href="{{ route('patient-history.ajukan-revisi', ['id' => $history->id]) }}"
+                                            class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all shadow-sm group-hover:shadow-blue-100 group">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+
+                                            <span>Ajukan Revisi</span>
+                                        </a>
                                     @elseif($history->status_revision == "PENDING")
-                                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-50/50 text-amber-600 border border-amber-200 rounded-xl text-xs font-bold shadow-sm shadow-amber-100/50 cursor-default group">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        <div
+                                            class="inline-flex items-center gap-2 px-4 py-2 bg-amber-50/50 text-amber-600 border border-amber-200 rounded-xl text-xs font-bold shadow-sm shadow-amber-100/50 cursor-default group">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            
+
                                             <div class="flex flex-col items-start leading-tight">
                                                 <span>Revisi Pending</span>
                                                 <span class="text-[9px] font-medium opacity-70">Menunggu Verifikasi</span>
                                             </div>
                                         </div>
                                     @elseif($history->status_revision == "CANCELLED")
-                                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-rose-50/50 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold shadow-sm cursor-help group relative" title="Klik untuk lihat alasan penolakan">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        
-                                        <div class="flex flex-col items-start leading-tight">
-                                            <span>Revisi Ditolak</span>
-                                            <span class="text-[9px] font-medium opacity-70">Lihat Alasan</span>
+                                        <div class="inline-flex items-center gap-2 px-4 py-2 bg-rose-50/50 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold shadow-sm cursor-help group relative"
+                                            title="Klik untuk lihat alasan penolakan">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+
+                                            <div class="flex flex-col items-start leading-tight">
+                                                <span>Revisi Ditolak</span>
+                                                <span class="text-[9px] font-medium opacity-70">Lihat Alasan</span>
+                                            </div>
                                         </div>
-                                    </div>
                                     @else
-                                       <a href="{{ route('revision.index' , ['id' => $history->id]) }}"
-                                                class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all shadow-sm group-hover:shadow-blue-100 group">
-                                                
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                
-                                                <span>Revisi</span>
-                                            </a>
+                                        <a href="{{ route('revision.index', ['id' => $history->id]) }}"
+                                            class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all shadow-sm group-hover:shadow-blue-100 group">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+
+                                            <span>Revisi</span>
+                                        </a>
                                     @endif
                                 </td>
                                 <td>
                                     @if($history->status_download == "PENDING")
-                                        <a href="{{ route('patient.ajukan.download' , ['id' => $history->id , 'status' => 'APPROVED_LEVEL_1']) }}"
-                                                class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all shadow-sm group-hover:shadow-blue-100 group">
-                                                
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                
-                                                <span>Ajukan Download</span>
-                                            </a>
+                                        <a href="{{ route('patient.ajukan.download', ['id' => $history->id, 'status' => 'APPROVED_LEVEL_1']) }}"
+                                            class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all shadow-sm group-hover:shadow-blue-100 group">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+
+                                            <span>ajukan acc</span>
+                                        </a>
                                     @elseif($history->status_download == "APPROVED_LEVEL_1")
-                                     <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-50/50 text-amber-600 border border-amber-200 rounded-xl text-xs font-bold shadow-sm shadow-amber-100/50 cursor-default group">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        <div
+                                            class="inline-flex items-center gap-2 px-4 py-2 bg-amber-50/50 text-amber-600 border border-amber-200 rounded-xl text-xs font-bold shadow-sm shadow-amber-100/50 cursor-default group">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            
+
                                             <div class="flex flex-col items-start leading-tight">
                                                 <span>Revisi Pending</span>
                                                 <span class="text-[9px] font-medium opacity-70">Menunggu Verifikasi</span>
                                             </div>
                                         </div>
+                                      @elseif($history->status_download == "REJECTED")
+                                 <div class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-rose-50/50 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold shadow-sm shadow-rose-100/50 cursor-default">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        
+                                        <div class="flex flex-col items-start leading-none">
+                                            <span class="text-[12px]">Rejected</span>
+                                            <span class="text-[8px] font-medium opacity-70 whitespace-nowrap">Data Tidak Valid</span>
+                                        </div>
+                                    </div>
+                                     @elseif($history->status_download == "CANCELLED")
+                                    <div class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-50/50 text-slate-600 border border-slate-200 rounded-xl text-xs font-bold shadow-sm shadow-slate-100/50 cursor-default">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                        </svg>
+                                        
+                                        <div class="flex flex-col items-start leading-none">
+                                            <span class="text-[12px]">Cancelled</span>
+                                            <span class="text-[8px] font-medium opacity-70 whitespace-nowrap">Oleh Pengguna</span>
+                                        </div>
+                                    </div>
                                     @endif
                                 </td>
                             </tr>

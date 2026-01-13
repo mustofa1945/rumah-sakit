@@ -28,7 +28,7 @@ class Dokter extends Model
         return $this->belongsTo(Poli::class);
     }
 
-     public function user()
+    public function user()
     {
         return $this->hasOne(User::class, 'dokter_id');
     }
@@ -40,15 +40,23 @@ class Dokter extends Model
         return $this->hasMany(Antrian::class);
     }
 
-     public function patientHistories()
+    public function patientHistories()
     {
         return $this->hasMany(PatientHistory::class, 'dokter_id');
     }
 
-     public function revisions()
+    public function revisions()
     {
         return $this->hasMany(PatientHistoryRevision::class, 'edited_by');
     }
+
+    public function publicProfile()
+    {
+        return $this->hasOne(DoctorPublicProfile::class, 'dokter_id');
+    }
+
+    // Dokter.php
+    
 
     // Enum schedule_day (opsional, untuk validasi / helper)
     public const DAYS = [

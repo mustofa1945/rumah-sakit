@@ -69,7 +69,7 @@
                                                 </svg>
                                                 <span>Ajukan </span>
                                            </a>
-                            @elseif($history->status_download == "PENDING")
+                            @elseif($history->status_download == "PENDING" || $history->status_download == "APPROVED_LEVEL_1")
                          <div class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-50/50 text-amber-600 border border-amber-200 rounded-xl text-xs font-bold shadow-sm shadow-amber-100/50 cursor-default">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -80,6 +80,38 @@
                                          <span class="text-[8px] font-medium opacity-70 whitespace-nowrap">Verifikasi Admin</span>
                                     </div>
                                 </div>
+                            @elseif($history->status_download == "REJECTED")
+                                 <div class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-rose-50/50 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold shadow-sm shadow-rose-100/50 cursor-default">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        
+                                        <div class="flex flex-col items-start leading-none">
+                                            <span class="text-[12px]">Rejected</span>
+                                            <span class="text-[8px] font-medium opacity-70 whitespace-nowrap">Data Tidak Valid</span>
+                                        </div>
+                                    </div>
+                                    @elseif($history->status_download == "CANCELLED")
+                                    <div class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-50/50 text-slate-600 border border-slate-200 rounded-xl text-xs font-bold shadow-sm shadow-slate-100/50 cursor-default">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                        </svg>
+                                        
+                                        <div class="flex flex-col items-start leading-none">
+                                            <span class="text-[12px]">Cancelled</span>
+                                            <span class="text-[8px] font-medium opacity-70 whitespace-nowrap">Oleh Pengguna</span>
+                                        </div>
+                                    </div>
+                                @elseif($history->status_download == "APPROVED_LEVEL_2")
+                                  <a href="{{ route('patient.ajukan.download' , ['id' => $history->id , 'status' => 'PENDING']) }}"
+                                                class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all shadow-sm group-hover:shadow-blue-100 group">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                                <span>Download</span>
+                                    </a>
+                                
                             @endif
                             
                             <button @click="selected === {{ $history->id }} ? selected = null : selected = {{ $history->id }}"

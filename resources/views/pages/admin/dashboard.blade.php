@@ -206,21 +206,21 @@
                                         <td class="px-6 py-6 text-right">
                                             {{-- Button Panggil/Selesai tetap seperti kode sebelumnya --}}
                                             @if($item->status == 'WAITING')
-                                            @if($isHasCalledStatus)
-                                            <button type="button" 
-                                                    class="bg-gray-400 text-gray-100 px-5 py-2 rounded-xl text-xs font-bold cursor-not-allowed shadow-none" 
-                                                    disabled>
-                                                    Call
-                                                </button>
-                                            @else
-                                                <form action="{{ route('queue.nextStatus', $item->id) }}" method="POST">
-                                                    @csrf @method('PATCH')
-                                                    <input type="hidden" name="status" value="CALLED">
+                                                @if($isHasCalledStatus)
+                                                    <button type="button"
+                                                        class="bg-gray-400 text-gray-100 px-5 py-2 rounded-xl text-xs font-bold cursor-not-allowed shadow-none"
+                                                        disabled>
+                                                        Call
+                                                    </button>
+                                                @else
+                                                    <form action="{{ route('queue.nextStatus', $item->id) }}" method="POST">
+                                                        @csrf @method('PATCH')
+                                                        <input type="hidden" name="status" value="CALLED">
 
-                                                    <button
-                                                        class="bg-blue-600 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-blue-200">Call</button>
-                                                </form>
-                                            @endif
+                                                        <button
+                                                            class="bg-blue-600 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-blue-200">Call</button>
+                                                    </form>
+                                                @endif
                                             @elseif($item->status == 'CALLED')
                                                 <a href="{{ route('admin.patient-histories.create', [$item->user_id]) }}"
                                                     class="bg-[#064E3B] hover:bg-emerald-900 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-200">Rekap</a>

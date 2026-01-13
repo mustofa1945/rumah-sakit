@@ -53,9 +53,10 @@ class LoginController extends Controller
 
             // Routing berdasarkan role
             return match ($user->role_id) {
-                1 => redirect()->route('superadmin.dashboard'),
+                1 => redirect()->route('nurse.dashboard.index'),
                 2 => redirect()->route('admin.dashboard'),
                 3 => redirect()->route('poli.index'),
+                6 => redirect()->route('admin-registration.index'),
                 default => redirect()->route('home.index'),
             };
 

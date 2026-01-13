@@ -1,6 +1,11 @@
 @extends("layout.mainLayout")
 
 @section("content")
+@if (session('warning'))
+        <x-partials.notif-component message="Warning" sign="{{ session('warning') }}">
+            <x-partials.icon-alert />
+        </x-partials.notif-component>
+    @endif
 <div class="min-h-screen bg-white">
     <section class="pt-24 pb-16 bg-gradient-to-b from-blue-50/50 to-white">
         <div class="max-w-7xl mx-auto px-6 text-center">
@@ -72,32 +77,41 @@
                         </div>
 
                         <div class="flex items-center justify-between pt-6 border-t border-slate-50">
-                            <div class="flex items-center gap-2">
-                   
-                                @php
-                          
-                                    $now = \Carbon\Carbon::now();
-                                    $start = \Carbon\Carbon::createFromTimeString($dokter->start_time);
-                                    $end = \Carbon\Carbon::createFromTimeString($dokter->end_time);
-                                
+    <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-2">
+            @php
+                $now = \Carbon\Carbon::now();
+                $start = \Carbon\Carbon::createFromTimeString($dokter->start_time);
+                $end = \Carbon\Carbon::createFromTimeString($dokter->end_time);
+                $isAvailable = $now->between($start, $end);
+            @endphp
+            
+            @if ($isAvailable)
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Tersedia Hari Ini</span>
+            @else
+                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tidak Tersedia</span>
+            @endif
+        </div>
+        
+        <a href="{{ route('profile.doctor.index', $dokter->id) }}" class="flex items-center gap-1.5 text-slate-400 hover:text-slate-600 transition-colors group/profile">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span class="text-[11px] font-bold uppercase tracking-tight">Lihat Profil</span>
+        </a>
+    </div>
 
-                                    $isAvailable = $now->between($start, $end);
-                                @endphp
-                                @if ($isAvailable)
-                                             <span class="w-2 h-2 rounded-full bg-gray-500"></span>
-                                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Tersedia Hari Ini</span>
-                                @else
-                                             <span class="w-2 h-2 rounded-full bg-gray-500"></span>
-                                  <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Tidak Tersedia Hari ini</span>
-                                @endif
-                            </div>
-                            @if ($isAvailable)
-                            <a href="{{ route('queue.create', ['dokter_id' => $dokter->id]) }}" class="text-blue-600 font-bold text-sm flex items-center gap-2 group/link">
-                                Buat Janji 
-                                <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                            </a>
-                            @endif
-                        </div>
+    @if ($isAvailable)
+    <a href="{{ route('queue.create', ['dokter_id' => $dokter->id]) }}" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm flex items-center gap-2 transition-all shadow-md shadow-blue-100 group/link">
+        Buat Janji 
+        <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+    </a>
+    @endif
+</div>
                     </div>
                 </div>
             </div>
